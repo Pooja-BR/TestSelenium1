@@ -1,0 +1,58 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TestNGAnt" default="testng">
+
+   <!-- Set global properties for this build -->
+
+   <dirname property="basedir" file="${ant.file}"/>
+<property name="test.classes.dir" value="${basedir}/out"/>
+<property name="report.dir" location="report" />
+
+   <!-- Set libraries -->
+
+   <path id="library.lib.classpath">
+       <fileset dir="${basedir}/lib"/>
+   </path>
+
+   <!-- Property sources -->
+
+<path id="test.source.dir">
+ <dirset dir="${basedir}">
+   <include name="src"/>
+ </dirset>
+</path>
+
+   <!-- Register Custom Compiler Taskdefs -->
+
+   <taskdef name="testng" classname="org.testng.TestNGAntTask">
+       <classpath location="lib/testng-6.14.2.jar" />
+   </taskdef>
+
+   <patternset id="compiler.resources">
+       <exclude name="**/?*.Java"/>
+   </patternset>
+
+    <!-- Clean task -->
+
+   <target name="clean" description="cleanup task">
+       <delete dir="${test.classes.dir}"/>
+       <delete dir="${report.dir}"/>
+   </target>  
+
+<!-- Compile -->
+
+   <target name="compile" description="Compile module TestNGAntTemplate">
+       <mkdir dir="${test.classes.dir}"/>
+       <Javac destdir="${test.classes.dir}">
+           <classpath refid="library.lib.classpath"/>
+           <src refid="test.source.dir"/>
+       </Javac>
+
+       <copy todir="${test.classes.dir}">
+           <fileset dir="${basedir}/src">
+               <patternset refid="compiler.resources"/>
+               <type type="file"/>
+           </fileset>
+       </copy>
+   </target>
+</project>
