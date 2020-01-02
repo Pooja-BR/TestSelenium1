@@ -1,0 +1,6 @@
+<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-Java -->
+<dependency>
+   <groupId>org.seleniumhq.selenium</groupId>
+   <artifactId>selenium-chrome-driver</artifactId>
+   <version>3.14.0</version>
+</dependency>
