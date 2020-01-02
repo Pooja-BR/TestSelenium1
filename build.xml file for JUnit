@@ -1,0 +1,69 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="JUnitAntTemplate" default="junit">
+
+   <!-- Set global properties for this build -->
+
+   <dirname property="basedir" file="${ant.file}"/>
+   <property name="test.classes.dir" value="${basedir}/out"/>
+
+   <!-- Set libraries -->
+
+   <path id="library.lib.classpath">
+       <fileset dir="${basedir}/lib"/>
+   </path>
+
+   <!-- Property sources -->
+
+   <path id="test.source.dir">
+       <dirset dir="${basedir}">
+           <include name="src"/>
+       </dirset>
+   </path>
+
+   <path id = "classpath.test">
+       <pathelement location = "${test.classes.dir}" />
+   </path>
+
+   <patternset id="compiler.resources">
+       <exclude name="**/?*.Java"/>
+   </patternset>
+
+<!-- Clean task -->
+
+   <target name="clean" description="cleanup task">
+       <delete dir="${test.classes.dir}"/>
+   </target>
+   
+<!-- Compile -->
+
+   <target name="compile" depends="clean"
+ description="Compile module JUnitAntTemplate">
+       <mkdir dir="${test.classes.dir}"/>
+       <Javac destdir="${test.classes.dir}" modulepath="${basedir}" includeantruntime="true">
+           <classpath refid="library.lib.classpath"/>
+           <src refid="test.source.dir"/>
+       </Javac>
+
+       <copy todir="${test.classes.dir}">
+           <fileset dir="${basedir}/src">
+               <patternset refid="compiler.resources"/>
+               <type type="file"/>
+           </fileset>
+       </copy>
+   </target>
+</project>
+The rules for building and running tests are added to the build.xml file in the following way:
+<!-- Run JUnit test -->
+
+   <target name="junit" depends="clean, compile" >
+   <junit>
+       <classpath>
+           <path refid="library.lib.classpath"/>
+           <path refid="classpath.test"/>
+       </classpath>
+       <batchtest fork="yes">
+           <fileset dir="src" includes="**/*Test.Java"/>
+       </batchtest>
+   </junit>
+</target>
